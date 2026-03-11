@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Look : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Look : MonoBehaviour
     [SerializeField] Vector2 Sensitivity = Vector2.one;
     Camera head;
     [SerializeField] GameObject gun;
+    [SerializeField] TMP_Text killCount;
+    int kills = 0;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,7 +47,9 @@ public class Look : MonoBehaviour
                 EnemyController enemyController = hit.transform.GetComponent<EnemyController>();
                 if(enemyController != null)
                 {
-                    enemyController.Delete();
+                    enemyController.Respawn();
+                    kills++;
+                    killCount.text = kills.ToString();
                 }
                 
             }

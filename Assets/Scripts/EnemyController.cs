@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] GameObject EnemyPrefab;
-    [SerializeField] GameObject SpawnPoint;
+    [SerializeField] GameObject SpawnPlane;
     [SerializeField] float speed;
     [SerializeField] Transform target;
     [SerializeField] string gameOverScreen;
@@ -23,6 +24,10 @@ public class EnemyController : MonoBehaviour
         transform.LookAt(targetLocation);
         transform.Translate(forwardd * Time.deltaTime);
 
+        if(this.transform.position.y < -5) //this skrivet av mathias
+        {
+            Respawn();
+        }
     }
     void OnCollisionEnter(Collision collision)
     {
@@ -33,11 +38,20 @@ public class EnemyController : MonoBehaviour
         SceneManager.LoadScene(gameOverScreen);            
         }*/
     }
-    public void Delete()
+    public void Respawn()
     {
-        Vector3 Spawnpoint = SpawnPoint.transform.position;
-        Instantiate(EnemyPrefab, Spawnpoint, transform.rotation);
+        Instantiate(EnemyPrefab, GetRandomSpawnPos(), transform.rotation);
         Destroy(this.gameObject);
+    }
+
+    Vector3 GetRandomSpawnPos()
+    {
+        Renderer spawnPlaneRenderer = SpawnPlane.GetComponent<Renderer>();
+        Bounds spawnBounds = spawnPlaneRenderer.bounds;
+        float randomX = UnityEngine.Random.Range(spawnBounds.min.x, spawnBounds.max.x);
+        float randomZ = UnityEngine.Random.Range(spawnBounds.min.z, spawnBounds.max.z);
+        float y = spawnBounds.max.y;
+        return new Vector3(randomX, y, randomZ);
     }
 
 }
