@@ -7,6 +7,7 @@ using TMPro;
 public class Look : MonoBehaviour
 {
     public Camera LookCamera;
+    public Camera ThirdPersonCamera;
     float xRotation = 0;
     Vector2 LookInput;
     [SerializeField] Vector2 Sensitivity = Vector2.one;
@@ -14,6 +15,8 @@ public class Look : MonoBehaviour
     [SerializeField] GameObject gun;
     [SerializeField] TMP_Text killCount;
     int kills = 0;
+    bool firstPerson = true;
+    int trigger = 0;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,8 +44,13 @@ public class Look : MonoBehaviour
         RaycastHit hit;
         if(gunAnimator.GetBool("IsShooting") != true)
         {
+            Camera shootCamera;
             gunAnimator.SetBool("IsShooting", true);
-            if (Physics.Raycast(LookCamera.transform.position, LookCamera.transform.forward, out hit))
+            if(firstPerson)
+                shootCamera = LookCamera;
+            else
+                shootCamera = ThirdPersonCamera;
+            if (Physics.Raycast(shootCamera.transform.position, shootCamera.transform.forward, out hit))
             {
                 EnemyController enemyController = hit.transform.GetComponent<EnemyController>();
                 if(enemyController != null)
@@ -59,6 +67,28 @@ public class Look : MonoBehaviour
     {
         Animator gunAnimator = gun.GetComponent<Animator>();
         gunAnimator.SetBool("IsShooting", false);
+    }
+    void OnMiddleClick()
+    {
+        Debug.Log("interracted");
+        trigger++;
+        if(trigger == 1)
+        {
+            if(firstPerson)
+            {
+                LookCamera.enabled = false;
+                ThirdPersonCamera.enabled = true;
+                firstPerson = false;
+            }
+            else if(!firstPerson)
+            {
+                LookCamera.enabled = true;
+                ThirdPersonCamera.enabled = false;
+                firstPerson = true;
+            }
+        }
+        else
+            trigger=0;
     }
 }
 
