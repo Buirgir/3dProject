@@ -1,8 +1,8 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
-using TMPro;
 
 public class Look : MonoBehaviour
 {
@@ -10,14 +10,20 @@ public class Look : MonoBehaviour
     public Camera ThirdPersonCamera;
     float xRotation = 0;
     Vector2 LookInput;
-    [SerializeField] Vector2 Sensitivity = Vector2.one;
+
+    [SerializeField]
+    Vector2 Sensitivity = Vector2.one;
     Camera head;
-    [SerializeField] GameObject gun;
-    [SerializeField] TMP_Text killCount;
+
+    [SerializeField]
+    GameObject gun;
+
+    [SerializeField]
+    TMP_Text killCount;
     int kills = 0;
     bool firstPerson = true;
     int trigger = 0;
-    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,49 +44,57 @@ public class Look : MonoBehaviour
     {
         LookInput = value.Get<Vector2>();
     }
+
     void OnClick()
     {
         Animator gunAnimator = gun.GetComponent<Animator>();
         RaycastHit hit;
-        if(gunAnimator.GetBool("IsShooting") != true)
+        if (gunAnimator.GetBool("IsShooting") != true)
         {
             Camera shootCamera;
             gunAnimator.SetBool("IsShooting", true);
-            if(firstPerson)
+            if (firstPerson)
                 shootCamera = LookCamera;
             else
                 shootCamera = ThirdPersonCamera;
-            if (Physics.Raycast(shootCamera.transform.position, shootCamera.transform.forward, out hit))
+            if (
+                Physics.Raycast(
+                    shootCamera.transform.position,
+                    shootCamera.transform.forward,
+                    out hit
+                )
+            )
             {
                 EnemyController enemyController = hit.transform.GetComponent<EnemyController>();
-                if(enemyController != null)
+                if (enemyController != null)
                 {
                     enemyController.Respawn();
                     kills++;
                     killCount.text = kills.ToString();
                 }
-                
             }
         }
     }
+
     public void OnAnimationEnd()
     {
         Animator gunAnimator = gun.GetComponent<Animator>();
         gunAnimator.SetBool("IsShooting", false);
     }
+
     void OnMiddleClick()
     {
         Debug.Log("interracted");
         trigger++;
-        if(trigger == 1)
+        if (trigger == 1)
         {
-            if(firstPerson)
+            if (firstPerson)
             {
                 LookCamera.enabled = false;
                 ThirdPersonCamera.enabled = true;
                 firstPerson = false;
             }
-            else if(!firstPerson)
+            else if (!firstPerson)
             {
                 LookCamera.enabled = true;
                 ThirdPersonCamera.enabled = false;
@@ -88,7 +102,6 @@ public class Look : MonoBehaviour
             }
         }
         else
-            trigger=0;
+            trigger = 0;
     }
 }
-

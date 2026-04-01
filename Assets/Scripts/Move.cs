@@ -1,20 +1,26 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
 
 public class Move : MonoBehaviour
 {
-    [SerializeField] float walkSpeed = 2f;
+    [SerializeField]
+    float walkSpeed = 2f;
     Vector2 moveInput;
     CharacterController controller;
     float velocityY = 0f;
-    [SerializeField] float gravityMulti = 1;
-    [SerializeField] float jumpForce = 1;
+
+    [SerializeField]
+    float gravityMulti = 1;
+
+    [SerializeField]
+    float jumpForce = 1;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
     }
-
 
     void Update()
     {
@@ -23,25 +29,42 @@ public class Move : MonoBehaviour
 
         if (controller.isGrounded && velocityY < 0)
         {
-            velocityY = -1;          
+            velocityY = -1;
         }
 
         //Movement
-        Vector3 movement = transform.forward * moveInput.y
-        + transform.right * moveInput.x;
+        Vector3 movement = transform.forward * moveInput.y + transform.right * moveInput.x;
 
         movement *= walkSpeed;
         movement.y = velocityY;
 
         controller.Move(movement * Time.deltaTime);
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        EnemyController enemyController = other.transform.root.GetComponent<EnemyController>();
+        if (other.tag == "EnemyLeg")
+        {
+            TakeKnockBack(enemyController.KnockbackDirection());
+        }
+    }
+
     void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
     }
+
     void OnJump(InputValue value)
     {
-        if(controller.isGrounded)
+        if (controller.isGrounded)
             velocityY = jumpForce;
+    }
+
+    public void TakeKnockBack(Vector3 knockBack)
+    {
+        Debug.Log("method called" + knockBack);
+        Vector3 movement = knockBack;
+        controller.Move(movement);
     }
 }
