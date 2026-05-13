@@ -27229,7 +27229,7 @@ Mesh:
     m_Center: {x: -37.71038, y: 0, z: -12.08736}
     m_Extent: {x: 47.752457, y: 0, z: 47.75246}
   m_MeshUsageFlags: 0
-  m_CookingOptions: 30
+  m_CookingOptions: -1
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   'm_MeshMetrics[0]': 1
@@ -32685,7 +32685,7 @@ GameObject:
   - component: {fileID: 1195367725}
   - component: {fileID: 1195367724}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

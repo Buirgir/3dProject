@@ -3,10 +3,14 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+//NOT IN USE
 public class theBossController : MonoBehaviour
 {
     Vector2 move = Vector2.zero;
-    [SerializeField] float rotationSpeed = 20;
+
+    [SerializeField]
+    float rotationSpeed = 20;
+
     public void OnMove(InputValue value)
     {
         Animator anim = GetComponent<Animator>();
@@ -18,17 +22,17 @@ public class theBossController : MonoBehaviour
         }
         else
         {
-            anim.SetBool("isRunning", false);            
+            anim.SetBool("isRunning", false);
         }
     }
+
     public void OnJump(InputValue value)
     {
         Animator anim = GetComponent<Animator>();
 
-
-
         anim.SetBool("isRunning", true);
     }
+
     public void Update()
     {
         Vector3 mv = Vector3.forward * move.y;
@@ -36,5 +40,4 @@ public class theBossController : MonoBehaviour
         float angle = rotationSpeed * move.x;
         transform.Rotate(Vector3.up, angle * Time.deltaTime);
     }
-    
 }

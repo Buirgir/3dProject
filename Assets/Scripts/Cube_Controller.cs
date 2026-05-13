@@ -1,6 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
+//NOT IN USE
 public class Cube_Controller : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -10,15 +11,15 @@ public class Cube_Controller : MonoBehaviour
         for (int i = 0; i < cyllinders.Length; i++)
         {
             Renderer r = cyllinders[i].GetComponent<Renderer>();
-            if(i < cyllinders.Length/2)
+            if (i < cyllinders.Length / 2)
             {
                 r.material.color = new Color(i * 0.05f, 0, 0);
             }
-            if(i > cyllinders.Length/2)
+            if (i > cyllinders.Length / 2)
             {
                 r.material.color = new Color(0, 0, i * 0.05f);
             }
-            if(i == cyllinders.Length/2)
+            if (i == cyllinders.Length / 2)
             {
                 r.material.color = new Color(0, 1, 0);
             }
@@ -28,8 +29,5 @@ public class Cube_Controller : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Update() { }
 }

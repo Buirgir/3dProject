@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+//NOT IN USE
 public class ControllerV2 : MonoBehaviour
 {
     Vector2 move = Vector2.zero;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void OnMove(InputValue value)
     {
@@ -16,7 +18,7 @@ public class ControllerV2 : MonoBehaviour
         }
         else
         {
-            anim.SetBool("isRunning", false);            
+            anim.SetBool("isRunning", false);
         }
     }
 

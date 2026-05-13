@@ -38,12 +38,13 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
-        isAttacking = false;
+        isAttacking = false; //Sets base state of attacking to false
     }
 
     // Update is called once per frame
     void Update()
     {
+        // moves enemy towards player
         if (isAttacking == false)
         {
             Vector3 forwardd = Vector3.forward * speed;
@@ -54,13 +55,14 @@ public class EnemyController : MonoBehaviour
             transform.position.y,
             target.position.z
         );
+        //Looks towards player so it moves in the right dirrection
         transform.LookAt(targetLocation);
-
+        //Respawns enemy when player falls too far
         if (this.transform.position.y < -5) //this skrivet av mathias
         {
             Respawn();
         }
-
+        //Detects if player is close to enemy, and if it is then enemy attacks
         float distanceToPlayer = Vector3.Distance(transform.position, target.position);
         if (distanceToPlayer < attackRange)
         {
@@ -80,6 +82,7 @@ public class EnemyController : MonoBehaviour
         }*/
     }
 
+    //Respawns 2 enemies at random locations arround the map
     public void Respawn()
     {
         Instantiate(EnemyPrefab, GetRandomSpawnPos(), transform.rotation);
@@ -87,6 +90,7 @@ public class EnemyController : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    //Gets a random location on a selected plane
     Vector3 GetRandomSpawnPos()
     {
         Renderer spawnPlaneRenderer = SpawnPlane.GetComponent<Renderer>();
@@ -109,6 +113,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    //Interrupts attack
     void StopAttack()
     {
         Animator enemyAnimator = GetComponent<Animator>();
@@ -116,6 +121,7 @@ public class EnemyController : MonoBehaviour
         isAttacking = false;
     }
 
+    //gets the direction the enemy should fly in when getting hit
     public Vector3 KnockbackDirection()
     {
         attackKnockBack = transform.forward * attackKnockbackadjust;

@@ -19,6 +19,7 @@ public class Move : MonoBehaviour
 
     void Start()
     {
+        //Gets charactercontroller
         controller = GetComponent<CharacterController>();
     }
 
@@ -26,7 +27,6 @@ public class Move : MonoBehaviour
     {
         //Gravity
         velocityY += Physics.gravity.y * Time.deltaTime * gravityMulti;
-
         if (controller.isGrounded && velocityY < 0)
         {
             velocityY = -1;
@@ -41,6 +41,7 @@ public class Move : MonoBehaviour
         controller.Move(movement * Time.deltaTime);
     }
 
+    //hit detector
     void OnTriggerEnter(Collider other)
     {
         EnemyController enemyController = other.transform.root.GetComponent<EnemyController>();
@@ -55,12 +56,14 @@ public class Move : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
 
+    //Jumping script
     void OnJump(InputValue value)
     {
         if (controller.isGrounded)
             velocityY = jumpForce;
     }
 
+    //Take knockback
     public void TakeKnockBack(Vector3 knockBack)
     {
         Debug.Log("method called" + knockBack);
